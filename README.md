@@ -12,4 +12,4 @@ Flask Web application to calculate ADX of a stock.
 # Process data in Application
   - Upload the file comtaining high, low, close and open of the stock
   - Application supports csv format only
-  -Click on download to download the process data as excel file
+  - Click on download to download the processed data as excel file
