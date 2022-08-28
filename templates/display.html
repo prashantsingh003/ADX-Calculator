@@ -1,0 +1,114 @@
+{% extends "layout.html" %}
+{% block content %}
+<h1>Lets see the Results</h1>
+
+<!-- Canvas to draw chart -->
+<canvas id="myChart" width="1000" height="400" style="max-width: 500;max-height:500;"></canvas>
+<a href="{{url_for('home')}}" class="btn btn-success">Upload another file</a>
+<!-- Canvas Ends -->
+<a href="{{url_for('download')}}" class="btn btn-success">Download data</a>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.js"
+    integrity="sha512-d6nObkPJgV791iTGuBoVC9Aa2iecqzJRE0Jiqvk85BhLHAPhWqkuBiQb1xz2jvuHNqHLYoN3ymPfpiB1o+Zgpw=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js/dist/chart.min.js"></script>
+   
+<script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
+<script>
+    var data=[];
+    async function getData(){
+        const ALL=await fetch('/getData');
+        data=await ALL.json();
+        data=data.data;
+        data.date.forEach(function(x,i,arr){
+            arr[i]=new Date(x);
+            // const month = ["Jan","Feb","March","April","May","June","July","Aug","Sept","Oct","Nov","Dec"];
+            // x=arr[i];
+            // arr[i]=x.getDate()+' '+month[x.getUTCMonth()];
+        })
+        createGraph(data)
+    }
+    function createGraph(data){
+        const ctx = document.getElementById('myChart').getContext('2d');
+        const labels=data.date;
+        
+        const myChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'ADX',
+                    data: data.adx,
+                    borderColor: 'rgb(13, 13, 13,0.5)',
+                    backgroundColor: 'rgb(107, 91, 149,0.5)',
+                    pointStyle: 'circle',
+                    pointRadius: 1,
+                    pointHoverRadius: 5
+                },
+                {
+                    label: '+DI',
+                    data: data.pdi,
+                    borderColor: '	rgb(0, 204, 0, 0.5)',
+                    backgroundColor: 'rgb(0, 230, 77, 0.5)',
+                    pointStyle: 'circle',
+                    pointRadius: 1,
+                    pointHoverRadius: 5
+                },
+                {
+                    label: '-DI',
+                    data: data.ndi,
+                    borderColor: 'rgb(204, 0, 0, 0.5)',
+                    backgroundColor: 'rgb(153, 51, 51, 0.5)',
+                    pointStyle: 'circle',
+                    pointRadius: 1,
+                    pointHoverRadius: 5
+                },
+                {
+                    label: 'ADX Mean: '+data.ADX_MEAN,
+                    data: Array(data.date.length).fill(data.ADX_MEAN),
+                    borderColor: 'rgb(11, 5, 8,0.5)',
+                    borderDash: [5, 5],
+                    pointStyle: 'circle',
+                    pointRadius: 0
+                }]
+            },
+            options: {
+                responsive:true,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Average Directional Index'
+                    },
+                },
+                interaction: {
+                    mode: 'index',
+                    intersect: false
+                },
+                scales: {
+                    x: {
+                        ticks:{
+                            font: { size: 13, } 
+                        },
+                        type: 'time',
+                        time: {
+                            tooltipFormat: 'dd T'
+                        },
+                        title: {
+                            display: true,
+                            text: 'Date'
+                        }
+                    },
+                    y: {
+                        ticks:{
+                            font: { size: 13, } 
+                        },
+                        beginAtZero: true,
+                        min:10
+                    }
+                }
+            }
+        });
+    }
+    getData();
+    </script>
+{% endblock content %}

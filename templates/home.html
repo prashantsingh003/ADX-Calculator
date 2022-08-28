@@ -1,0 +1,37 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="content-section">
+    <h1 class="display-6">Follow 3 easy steps to get the result</h1>
+    <ol class="list-group list-group-numbered">
+        <li class="list-group-item">Choose the data containing high, low, open, close</li>
+        <li class="list-group-item">Upload the data file <mark><b>CSV</b></mark> format only</li>
+        <li class="list-group-item">Click on <mark><b>Check out result</b></mark> button</li>
+      </ol>
+</div>
+<div class="content-section">
+    <form action="/home" method="post" enctype="multipart/form-data">
+        <fieldset class="form-group">
+            <legend class="border-bottom mb-4">Let's get the data first</legend>
+            <div class="form-group">
+                <label class="form-control-label" for="data">Upload CSV file</label>
+                <input class='form-control-file' type="file" name="csv_data" id="" required>
+            </div>
+        </fieldset>
+        <div class="form-group">
+            <button class="btn btn-outline-info" type="submit">Submit</button>
+        </div>
+    </form>
+  </div>
+  
+  {% with messages=get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+  {% for category,message in messages %}
+  {% if category=="success" %}
+  <a href="{{url_for('display')}}" class="btn btn-primary">Check out result</a>
+  {% endif %}
+  {% endfor %}
+  {% else %}
+  <a href="#" class="btn btn-warning" disabled>Check out result</a>
+  {% endif %}
+  {% endwith %}
+{% endblock content %}
