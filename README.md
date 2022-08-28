@@ -4,7 +4,7 @@ Flask Web application to calculate ADX of a stock.
 - Clone the repo
 - Create virtual environment
     - python -m venv env'
-    -'env/Scripts/activate'
+    - 'env/Scripts/activate'
 - Install requirements.txt
     - 'pip install -r requirements.txt'
     - Run the "app.py"
