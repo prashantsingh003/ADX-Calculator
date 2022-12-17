@@ -24,14 +24,14 @@
   </div>
   
   {% with messages=get_flashed_messages(with_categories=true) %}
-  {% if messages %}
-  {% for category,message in messages %}
-  {% if category=="success" %}
-  <a href="{{url_for('display')}}" class="btn btn-primary">Check out result</a>
-  {% endif %}
-  {% endfor %}
-  {% else %}
-  <a href="#" class="btn btn-warning" disabled>Check out result</a>
-  {% endif %}
+    {% if messages %}
+        {% for category,message in messages %}
+            {% if category=="success" %}
+            <a href="{{url_for('display')}}" class="btn btn-primary">Check out result</a>
+            {% endif %}
+        {% endfor %}
+    {% else %}
+        <a href="#" class="btn btn-warning" disabled>Check out result</a>
+    {% endif %}
   {% endwith %}
 {% endblock content %}
